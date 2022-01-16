@@ -23,6 +23,14 @@
   @apply bg-red-500;
 }
 
+.tag.akka {
+  @apply bg-red-500;
+}
+
+.tag.scala {
+  @apply bg-red-500;
+}
+
 .tag.enchiladas {
   @apply text-gray-900 bg-yellow-500;
 }

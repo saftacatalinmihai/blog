@@ -1,11 +1,11 @@
 {
-  "name": "11r",
-  "description": "america's favorite eleventy blog template",
-  "url": "https://reeseschultz.github.io",
-  "baseUrl": "/11r/",
+  "name": "Mihai's blog",
+  "description": "phylosopher of computation",
+  "url": "https://saftacatalinmihai.github.io/11rblog/",
+  "baseUrl": "/11rblog/",
   "author": {
-    "handle": "@ReeseCodes",
-    "name": "Reese Schultz"
+    "handle": "@mihaisafta_",
+    "name": "Mihai Safta"
   },
   "images": {
     "twitter": "twitter.jpg",
