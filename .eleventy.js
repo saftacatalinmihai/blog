@@ -2,6 +2,7 @@ module.exports = config => {
   const markdownIt = new require('markdown-it')({
     typographer: true,
     linkify: true,
+    html: true
   });
 
   const markdownItAnchor = require('markdown-it-anchor');
