@@ -19,6 +19,10 @@
   content: "#";
 }
 
+.tag.automation {
+  @apply bg-indigo-500;
+}
+
 .tag.cats {
   @apply bg-red-500;
 }

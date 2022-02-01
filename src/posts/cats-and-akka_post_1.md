@@ -87,7 +87,7 @@ A stream component can decide when to ask for more input messages to pass to its
 Akka is using the abstractions of Source, Flow, Sink for modeling streams.
 
 <p align="center">
-    <img alt="source-flow-sink" title="Source via Flow to Sink" src="/11rblog/SourceFlowSink-4.png">
+    <img alt="source-flow-sink" title="Source via Flow to Sink" src="/SourceFlowSink-4.png">
 </p>
 
-<!-- ![source-flow-sink](/11rblog/SourceFlowSink-4.png "Source via Flow to Sink") -->
+<!-- ![source-flow-sink](/SourceFlowSink-4.png "Source via Flow to Sink") -->
