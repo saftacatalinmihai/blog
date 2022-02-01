@@ -1,8 +1,8 @@
 {
   "name": "Mihai's blog",
   "description": "phylosopher of computation",
-  "url": "https://11rblog.pages.dev/11rblog/",
-  "baseUrl": "/11rblog/",
+  "url": "https://11rblog.pages.dev/",
+  "baseUrl": "/",
   "author": {
     "handle": "@mihaisafta_",
     "name": "Mihai Safta"
