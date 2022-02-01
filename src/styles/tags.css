@@ -24,11 +24,11 @@
 }
 
 .tag.akka {
-  @apply bg-red-500;
+  @apply bg-blue-500;
 }
 
 .tag.scala {
-  @apply bg-red-500;
+  @apply bg-orange-500;
 }
 
 .tag.enchiladas {

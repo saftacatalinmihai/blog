@@ -10,11 +10,11 @@ tags:
   - akka
 ---
 
-In Scala you can write pure functional code, similar to Haskell or other pure functional languages, but you’re not obligated to. Wikipedia categories Scala as an impure Functional language.
+In [Scala](https://typelevel.org/cats/) you can write [pure functional](https://en.wikipedia.org/wiki/Purely_functional_programming) code, similar to Haskell or other [pure functional languages](https://en.wikipedia.org/wiki/List_of_programming_languages_by_type#Pure), but you’re not obligated to. Wikipedia categories Scala as an impure Functional language.
 
 FP purists view this as a weakness of Scala, but others view the option of “cheating” pureness as an acceptable choice sometimes. Even if you can do everything purely, it’s sometimes a lot easier to think about the problem in a different paradigm.
 
-Pure FP is great for writing correct functions you can easily reason about in isolation and compose well with other pure functions. We can easily unit test them since pure functions only depend on their input arguments and always produce the same output for the same arguments – they are referentially transparent.
+Pure FP is great for writing correct functions you can easily reason about in isolation and compose well with other pure functions. We can easily unit test them since pure functions only depend on their input arguments and always produce the same output for the same arguments – they are [referentially transparent](https://en.wikipedia.org/wiki/Referential_transparency).
 
 This allows the programmer and the compiler to reason about program behavior as a rewrite system. This can help in proving correctness, simplifying an algorithm, help change code without breaking it, or optimizing code through memoization, common sub-expression elimination, lazy evaluation, or parallelization.
 
