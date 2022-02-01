@@ -5,6 +5,7 @@ excerpt: Cats and Akka – Part 1
 date: 2021-02-06
 updatedDate: 2021-02-06
 tags:
+  - post
   - scala
   - cats
   - akka
