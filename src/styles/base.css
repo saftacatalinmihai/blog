@@ -2,7 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=optional');
 
 /* Prism Code Highlighting Theme (see https://prismjs.com) */
-@import url('https://cdn.jsdelivr.net/npm/prism-themes@1.5.0/themes/prism-dracula.css');
+/* @import url('https://cdn.jsdelivr.net/npm/prism-themes@1.5.0/themes/prism-darcula.css'); */
+@import url('https://cdn.jsdelivr.net/npm/prism-themes@1.5.0/themes/prism-duotone-sea.css');
 
 :not(pre) > code[class*="language-"] { /* Fixes issue where theme removes indentation. */
 	white-space: pre;
@@ -100,6 +101,10 @@ hr {
   border-left: 0.5rem solid #718096;
   margin: 1.5em 1.5em;
   padding: 0.5em 1em;
+}
+
+.content a:link {
+  text-decoration: underline;
 }
 
 .content > img {

@@ -5,6 +5,11 @@ module.exports = config => {
     html: true
   });
 
+  markdownIt.renderer.rules.code_inline = (tokens, idx, { langPrefix = 'scala' }) => {
+    const token = tokens[idx];
+    return `<code class="${langPrefix}">${token.content}</code>`;
+  };
+
   const markdownItAnchor = require('markdown-it-anchor');
   markdownIt.use(markdownItAnchor);
 
