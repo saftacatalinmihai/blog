@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Pure Functional Stream processing in Scala
+title: Pure Functional Stream processing in Scala [1]
 excerpt: Cats and Akka – Part 1
 date: 2021-02-06
 updatedDate: 2021-02-06
@@ -193,6 +193,8 @@ We could write a pure FP program to run these steps sequentially
 But now let’s see how we could wrap each step using Akka Streams.
 
 Since Akka Streams can’t work in a purely functional style, we have to execute the effects of the operation in each part of the flow… we can’t remain in the pure functional programing style of constructing a single IO and running it only once. We are moving from the pure FP world into the Flow Based Programming World.
+
+<h6 id="mapAsync-unsafeToFuture"></h6>
 
 ```scala
 Source(List("1|123", "2|123", "3|789"))
