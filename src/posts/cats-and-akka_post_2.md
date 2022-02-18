@@ -11,6 +11,10 @@ tags:
   - akka
 ---
 
+<div align="center">
+    <img alt="graph-dsl-code" title="GraphDSL Code" src="/carbon.png">
+</div>
+
 In the last [post](/post/pure-functional-stream-processing-in-scala-1/), we saw how to combine pure functions running in IO and Akka streams using `.mapAsync` and `.unsafeToFuture`
 
 ```scala
@@ -199,17 +203,121 @@ implicit class FlowExtensions[A, B](val flow: Flow[A, B, NotUsed]) extends AnyVa
 }
 ```
 
+We’ll call this `safeMapAsync` since we know w’re catching exceptions as part of the graph.
 
+The logic behind is just calling `.attempt` on the **IO**, which will return an `Either[Throwable, C]` . We then split the Either into the 2 separate outputs of the new Graph.
 
+The return type here is no longer Flow, but it’s a Graph with the shape: FanOut with 2 outputs:\
+`Graph[FanOutShape2[A, C, Throwable], NotUsed]`\
+The input is of type A, normal output type is C and error output is Throwable.
 
+The helper method for splitting the Either is a bit more verbose… but it’s very generic, so you only have to write it once.
 
+The helper method for splitting the Either is a bit more verbose… but it’s very generic, so you only have to write it once.
 
+```scala
+def split[A, E, B](flow: Flow[A, Either[E, B], NotUsed]): Graph[FanOutShape2[A, B, E], NotUsed] =
+  GraphDSL
+    .create() { implicit builder =>
+      import GraphDSL.Implicits._
 
+      val F = builder.add(flow)
+      val B = builder.add(Broadcast[Either[E, B]](2))
 
+      val LeftBranch = builder.add(Flow[Either[E, B]].collect {
+        case Left(b) => b
+      })
 
+      val RightBranch = builder.add(Flow[Either[E, B]].collect {
+        case Right(c) => c
+      })
 
+      F ~> B ~> LeftBranch
+           B ~> RightBranch
 
+      new FanOutShape2(F.in, RightBranch.out, LeftBranch.out)
+    }
+```
 
+Now we can again rewrite the original stream to capture the error outputs and merge them into a generic error handling flow.
+
+First, we need to update the components to use `.safeMapAsync`.
+
+```scala
+val parseComponent = Flow[String].safeMapAsync(8)(parseMessage[IO])
+val getUserComponent = Flow[Message].safeMapAsync(8)(m => getUser[IO](m.userId))
+val checkPermissionComponent =
+  Flow[User].safeMapAsync(8)(u => checkPermission[IO](u).map( (u, _) ))
+val sendNewsletterComponent = Flow[(User, Boolean)].safeMapAsync(8) {
+  case (u, p) => sendNewsletterIfAllowed[IO](u, p)
+}
+```
+
+We then write the graph using these components
+
+```scala
+GraphDSL.create() { implicit builder =>
+  import GraphDSL.Implicits._
+
+  val (parse, parseErr) = toTuple(builder.add(parseComponent))
+  val (getUser, getUserErr) = toTuple(builder.add(getUserComponent))
+  val (checkPermission, checkPermissionErr) = toTuple(builder.add(checkPermissionComponent))
+  val (sendNewsletter, sendNewsletterErr) = toTuple(builder.add(sendNewsletterComponent))
+  val (handleErrors, handleErrorsErr) = toTuple(builder.add(handleErrorsComponent))
+  val M = builder.add(Merge[Throwable](5))
+
+  // format: off
+  parse ~> getUser ~> checkPermission ~> sendNewsletter
+  parseErr ~>                                                  M
+           getUserErr ~>                                       M
+                      checkPermissionErr ~>                    M
+                                         sendNewsletterErr ~>  M ~> handleErrors
+                                                               M <~ handleErrorsErr
+  // format: on
+
+  new FanOutShape2[String, Unit, Throwable](parse.in, sendNewsletter.out, handleErrors.out)
+}
+```
+
+The toTuple<sup id="a6">[[6]](#f6)</sup> helper just recreates a Flow for the success path and a separate Source with the errors from the FanOutShape2 graph to make it easier to connect.
+
+If we look at this drawing of this graph and compare it with the code, we’ll see that they are quite similar
+
+<div align="center">
+    <img alt="complex-components" title="Complex Components" src="/ComplexComponents.png">
+</div>
+
+Notice that the newly constructed Graph is itself a `FanOutShape2` graph. We could embed it in a higher level graph. Structural composition of graphs is easy, they compose hierarchically.
+
+Also note that we have a loop from the error output of the error handler itself. This may come as a surprise… we could have side-effects in handling errors like sending a notification to PagerDuty or an email. These effects could fail themselves - if the service is down…
+
+If we wrote the code in a more traditional manner, we might even miss seeing this loop<sup id="a7">[[7]](#f7)</sup>, but now that we see it explicitly, we can do something about it<sup id="a8">[[8]](#f8)</sup>.
+
+In my case, the handleErrorsComponent function prints the exception, but also [throttles](https://doc.akka.io/docs/akka/current/stream/operators/Source-or-Flow/throttle.html#throttle) the stream so that if there are many errors happening, the whole stream will go into back-pressure and start taking fewer input messages.
+
+```scala
+val handleErrorsComponent =
+  Flow[Throwable]
+    .throttle(1, 1.second)
+    .safeMapAsync(8)(t => println(t))
+```
+
+Because the error data flow is explicit in the stream, the graph becomes more verbose than before.\
+I don’t see this as a problem, in fact, I see it as a plus since many issues with systems occur because of poor error management.
+
+Having explicit error output forces you to deal with them. The graph needs to be fully connected, so the errors have to go somewhere.
+
+Having a generic error handling flow is a good place to start, and just merge all errors in this flow. We can conceive more complex scenarios where you can handle different error types in different flows. Just connecting the error outputs to the specific error handler component can configure it.
+
+### Conclusion
+
+In this post, we find how to create Akka flows from pure functions in a syntactically cleaner way, with the help of some extension classes over Source and Flow.
+
+We also see how to construct more complex components and stitch them together using the GraphDSL.
+
+In future posts, I’ll explore more patterns of constructing and combining components.
+
+Coments [thread on Reddit](https://www.reddit.com/r/scala/comments/lotklb/pure_functional_stream_processing_in_scala_cats/)
 
 </br>
 
@@ -226,3 +334,17 @@ It throws errors out of bound – you don’t have an error stream [↩](#a3)
 <b id="f4">[4]</b> We can be more generic by using the [Effect](https://typelevel.org/cats-effect/typeclasses/effect.html) type constraint instead of IO directly [↩](#a4)
 
 <b id="f5">[5]</b> Because it executes side effects [↩](#a5)
+
+<b id="f6">[6]</b>
+  ```scala
+  def toTuple[I, O, E](g: FanOutShape2[I, O, E]): (FlowShape[I, O], Outlet[E]) = {
+    val Err = g.out1
+    val Success = g.out0
+    (FlowShape(g.in, Success), Err)
+  }
+  ``` 
+[↩](#a6)
+
+<b id="f7">[7]</b> which could lead to unfortunate things like messages stuck in an infinite loop, hogging CPU and memory [↩](#a7)
+
+<b id="f8">[8]</b> making sure to handle errors in the loop so they don’t cycle infinitely [↩](#a8)

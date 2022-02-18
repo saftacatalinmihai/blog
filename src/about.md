@@ -4,6 +4,13 @@ title: About
 path: about
 ---
 
-This website is a live example of an Eleventy template — it's not a real blog.
+Hi there! I’m a software architect / engineer, an enthusiast of many software related topics.
 
-People using this template may want to add some information to this page about them or their business.
+From programming languages to architecture and design to hardware and automation.
+
+I post some of my thoughts on these topics in this blog.
+
+
+Email me at: me@mihaisafta.com\
+Follow me on twitter: [@mihaisafta_](https://twitter.com/mihaisafta_)\
+And GitHub: [saftacatalinmihai](https://github.com/saftacatalinmihai)
