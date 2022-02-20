@@ -1,6 +1,6 @@
 const handlePrivacyPolicyNoticeDismissal = () => {
-  const storage = sessionStorage; // TODO : You may want to delete this line and uncomment the next line when your privacy policy is complete. Why? Because the deployed template should not use localStorage since it lacks a privacy policy.
-  // const storage = DEV_MODE ? sessionStorage : localStorage
+  // const storage = sessionStorage; // TODO : You may want to delete this line and uncomment the next line when your privacy policy is complete. Why? Because the deployed template should not use localStorage since it lacks a privacy policy.
+  const storage = DEV_MODE ? sessionStorage : localStorage
   const dismissedPrivacyPolicyNotice = storage.getItem(
     'dismissedPrivacyPolicyNotice'
   );
