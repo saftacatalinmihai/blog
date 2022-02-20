@@ -4,6 +4,7 @@ title: Pure Functional Stream processing in Scala [1]
 excerpt: Cats and Akka – Part 1
 date: 2021-02-06
 updatedDate: 2021-02-06
+banner: ComponentErr-1.png
 tags:
   - post
   - scala

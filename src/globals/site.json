@@ -1,6 +1,6 @@
 {
   "name": "Mihai's blog",
-  "description": "phylosopher of computation",
+  "description": "Philosopher of Computation",
   "url": "https://blog.mihaisafta.com/",
   "baseUrl": "/",
   "author": {
@@ -8,17 +8,17 @@
     "name": "Mihai Safta"
   },
   "images": {
-    "twitter": "twitter.jpg",
-    "og": "og.jpg"
+    "twitter": "profile.jpeg",
+    "og": "og.png"
   },
   "feed": {
     "filename": "feed.xml",
     "path": "/feed/feed.xml",
-    "id": "https://example.com/"
+    "id": "https://blog.mihaisafta.com/"
   },
   "jsonfeed": {
     "filename": "feed.json",
     "path": "/feed/feed.json",
-    "url": "https://example.com/feed/feed.json"
+    "url": "https://blog.mihaisafta.com/feed/feed.json"
   }
 }

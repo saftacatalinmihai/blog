@@ -4,6 +4,7 @@ title: Pure Functional Stream processing in Scala [2]
 excerpt: Cats and Akka – Part 2
 date: 2021-02-14
 updatedDate: 2021-02-14
+banner: carbon.png
 tags:
   - post
   - scala
@@ -31,7 +32,10 @@ In order to make it easier to work with IO in Akka Streams, we can write some he
 
 Readability will improve, **but** before we get there, it’s very important to recognise that we should view these 2 ways of writing code<sup id="a1">[[1]](#f1)</sup> as having [orthogonal](https://en.wikipedia.org/wiki/Orthogonality_\(programming\) ) purposes.
 
+<br/>
+
 ### Streams as plumbing
+<br/>
 
 <div align="center">
     <img alt="plumbing" title="Plumbing" src="/plumbing.jpeg">
