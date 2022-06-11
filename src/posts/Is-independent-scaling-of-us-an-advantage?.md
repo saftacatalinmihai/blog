@@ -1,10 +1,9 @@
 ---
 layout: post
-title: Pure Functional Stream processing in Scala [1]
-excerpt: Cats and Akka – Part 1
-date: 2021-02-06
-updatedDate: 2021-02-06
-banner: ComponentErr-1.png
+title: Microservice scaling advantage?
+excerpt: Is independent scaling of microservices an advantage ?
+date: 2022-06-12
+updatedDate: 2022-06-12
 tags:
   - draft-post
   - microservice
