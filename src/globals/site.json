@@ -1,0 +1,24 @@
+{
+  "name": "Mihai's blog",
+  "description": "Philosopher of Computation",
+  "url": "https://blog.mihaisafta.com/",
+  "baseUrl": "/",
+  "author": {
+    "handle": "@mihaisafta_",
+    "name": "Mihai Safta"
+  },
+  "images": {
+    "twitter": "profile.jpeg",
+    "og": "og.png"
+  },
+  "feed": {
+    "filename": "feed.xml",
+    "path": "/feed/feed.xml",
+    "id": "https://blog.mihaisafta.com/"
+  },
+  "jsonfeed": {
+    "filename": "feed.json",
+    "path": "/feed/feed.json",
+    "url": "https://blog.mihaisafta.com/feed/feed.json"
+  }
+}
